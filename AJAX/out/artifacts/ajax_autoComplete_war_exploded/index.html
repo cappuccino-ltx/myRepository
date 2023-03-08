@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ajax实现搜索联想和自动补全</title>
+
+  <style type="text/css">
+    .userInput{
+        width : 300px;
+        height : 25px;
+      font-size : 20px;
+      padding-left: 5px;
+    }
+    .showDiv{
+      width : 309px;
+      border : 1px solid lightgray;
+      background: aliceblue;
+      display: none;
+    }
+    .showDiv p{
+      padding-left: 5px;
+      margin-top: 2px;
+      margin-bottom: 2px;
+    }
+    .showDiv p:hover{
+      cursor: pointer;
+      border: 1px black solid;
+      background: aquamarine;
+    }
+  </style>
+</head>
+
+<body>
+
+<script type="text/javascript">
+  window.onload = () => {
+    document.getElementById("userInput").onkeyup = () =>{
+      var userinput = document.getElementById("userInput").value;
+      if(userinput == ""){
+          document.getElementById("showDiv").style.display = "none";
+      }else{
+          //发送ajax请求从数据库中取出数据：
+          var xhr = new XMLHttpRequest();
+
+          xhr.onreadystatechange = () => {
+              if(xhr.readyState == 4){
+                  if(xhr.status >= 200 && xhr.status < 300){
+                      //接收到一个json数组[{"content":"java"},{"content":"javascript"}]
+                      //console.log(xhr.responseText)
+                      const json = JSON.parse(xhr.responseText);
+                      //输出到div中
+                      var html = "";
+                      for (let i = 0; i < json.length; i++) {
+                          html += "<p onclick='none(\""+json[i].content+"\")'>"+json[i].content+"</p>";
+                          //console.log(json[i].content)
+                      }
+                      document.getElementById("showDiv").innerHTML = html;
+                      document.getElementById("showDiv").style.display = "block";
+                  }
+              }
+          }
+          xhr.open("POST","/ajax/autocomplete",true);
+          xhr.setRequestHeader("content-type","application/x-www-form-urlencoded");
+          xhr.send("userinput="+userinput);
+      }
+
+    }
+  }
+
+  function none(select){
+      document.getElementById("userInput").value = select;
+      document.getElementById("showDiv").style.display = "none";
+  }
+</script>
+
+    <input type="text" class="userInput" id="userInput"/>
+
+    <div id="showDiv" class="showDiv">
+        <!--<p>北京疫情最新情况</p>
+        <p>山西疫情最新情况</p>
+        <p>陕西疫情最新情况</p>-->
+    </div>
+</body>
+</html>

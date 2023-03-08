@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajax的第一个程序</title>
+</head>
+<body>
+
+<!--
+
+    第一个Ajax代码实现
+    完成一个需求，，定义一个按钮，一个div图层，
+    点击按钮，，发送请求，将服务端返回的字符串，显示到div图层中
+-->
+
+    <script type="text/javascript">
+        window.onload = function(){
+            document.getElementById("btn").onclick = function(){
+                //1、床架Ajax核心对象：XMLHttpRequest
+                var xhr = new XMLHttpRequest();
+                //2、注册回调函数，这个回调函数会在XMLHttpRequest对象的readyState属性值发生变化的时候执行
+                /**
+                 * readyState属性的值代表的状态
+                 * 0：请求未初始化 1：服务器连接已建立 2：请求已收到 3：正在处理请求 4：请求已完成且响应已就绪
+                 */
+                xhr.onreadystatechange = function(){
+                    //
+                    //console.log(this.readyState);
+                    //当readyState属性值为4的时候，就说明响应结束了，
+                    if(this.readyState == 4){
+                        //通过this.status可以获取Http响应状态码:200代表成功，404代表资源找不到，500代表服务器内不发生了错误
+                        if(this.status == 404){
+                            alert("您访问的资源未找到！");
+                        }else if(this.status == 500){
+                            alert("服务器内不发生了严重的错误！")
+                        }else if(this.status == 200){
+                            //代表访问成功了
+                            //通过responseText属性来获取响应的信息
+                            document.getElementById("div1").innerHTML = this.responseText
+                        }
+                    }
+                }
+                //3、开启通道：
+                /**
+                 * 第一个参数，代表的是以什么方式请求：get还是post
+                 * 第二个参数，代表的是请求的路径，
+                 * 第三个参数，是否以异步的方式请求，绝大多数情况下都是true，很少情况下才会使用同步请求。
+                 *
+                 */
+                xhr.open("GET","/Ajax/ajax/request01",true)
+
+                //4、发送请求：
+                xhr.send()
+            }
+
+        }
+    </script>
+    <input type="Button" value="发送Ajax请求" id="btn">
+    <div id="div1"></div>
+
+</body>
+</html>

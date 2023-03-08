@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>发送POST请求</title>
+</head>
+<body>
+
+<script type="text/javascript">
+  window.onload = function(){
+    document.getElementById("btn").onclick = function(){
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function(){
+        if(this.readyState == 4){
+          if(this.status == 200){
+            document.getElementById("div1").innerHTML = this.responseText
+          }else{
+            alert(this.status)
+          }
+        }
+      }
+      xhr.open("POST","/Ajax/ajax/request03",true)
+      //使用Ajax模拟表单发送post请求，需要设置以下属性：
+      //不需要记：写一个form表单，敲一个enctype就会有提示，复制粘贴就好了
+      // <fomr enctype="application/x-www-form-urlencoded"></fomr>
+      xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+      var username = document.getElementById("username").value;
+      var userpwd = document.getElementById("userpwd").value;
+      xhr.send("username="+username+"&userpwd="+userpwd)
+    }
+  }
+</script>
+
+
+用户名：<input type="text" id="username"><br>
+密码：<input type="text" id="userpwd"><br>
+<input type="button" id="btn" value="提交">
+<div id="div1"></div>
+
+</body>
+</html>
