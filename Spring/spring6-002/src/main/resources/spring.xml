@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+    <!--
+    要扫描多个包的话，这样子是不行的
+    <context:component-scan base-package="com.ltx.spring.bean"/>
+    <context:cpmponent-scan base-package="com.ltx.spring.service.impl"/>
+    -->
+    <!--可以这样实现,用逗号隔开，指定多个包
+    <context:component-scan base-package="com.ltx.spring.service.impl,
+                                          com.ltx.spring.bean,
+                                          com.ltx.spring.mapper,
+                                          com.ltx.spring.web"/>
+                                          -->
+    <!--也可以指定这些包共同的父包，但是这样做会损失一定的效率-->
+    <context:component-scan base-package="com.ltx.spring"/>
+</beans>

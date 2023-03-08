@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="spring6-003-aspectj-aop" />
+        <module name="spring6-004-mybatis" />
+        <module name="spring6-001" />
+        <module name="spring6-002" />
+      </profile>
+    </annotationProcessing>
+  </component>
+</project>
