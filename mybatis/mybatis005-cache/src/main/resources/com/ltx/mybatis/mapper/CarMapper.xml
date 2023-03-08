@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ltx.mybatis.mapper.CarMapper">
+
+    <!--
+        注意：二级缓存默认情况下是开启的，但是要在使用的二级缓存的SqlSession.xml文件中配置<cache/>标签
+        二级缓存的实体类一般都是可序列化的，也就是pojo类要实现Serializable接口
+        只有在SqlSession对象关闭或者提交之后，一级缓存才会被写入到二级缓存里，此时二级缓存才可用
+    -->
+    <cache/>
+
+    <select id="selectById2" resultMap="CarResultMap">
+        select * from t_car where id = #{id}
+    </select>
+
+    <resultMap id="CarResultMap" type="Car">
+        <id property="id" column="id"/>
+        <result property="carNum" column="car_num"/>
+        <result property="brand" column="brand"/>
+        <result property="guidePrice" column="guide_price"/>
+        <result property="produceTime" column="produce_time"/>
+        <result property="carType" column="car_type"/>
+    </resultMap>
+
+    <select id="selectById" resultMap="CarResultMap">
+        select * from t_car where id = #{id}
+    </select>
+</mapper>

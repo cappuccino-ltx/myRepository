@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ltx.mybatis.mapper.CarMapper">
+
+    <!--使用foreach标签实现批量插入-->
+    <insert id="insertWithForEach">
+        insert into t_car values
+        <foreach collection="cars" item="car" separator=",">
+            (null,#{car.carNum},#{car.brand},#{car.guidePrice},#{car.produceTime},#{car.carType})
+        </foreach>
+
+    </insert>
+
+    <!--使用foreach标签进行批量删除-->
+    <!--
+        conllection 用@Param指定的数组名或者集合名，未用@Param指定的可能是array,
+        item 代表集合或者数组中的元素
+        separator 循环之间的分割符号
+    -->
+    <delete id="deleteByIds">
+        delete from t_car where id in(
+            <foreach collection="ids" item="id" separator=",">
+                #{id}
+            </foreach>
+            )
+    </delete>
+
+    <!--使用choose when otherwise 标签进行选择性单标签查询-->
+    <!--
+        注意，仅执行第一个不为空的条件
+    -->
+    <select id="selectBySingleCondition" resultMap="carResultMap">
+        select id,car_type,brand,guide_price,produce_time,car_type from t_car
+        <choose>
+            <when test="brand != null and brand != ''">
+                where brand like "%"#{brand}"%"
+            </when>
+            <when test="guidePrice != null and guidePrice != ''">
+                where guide_price > #{guidePrice}
+            </when>
+            <when test="carType != null and carType != ''">
+                where car_type = ${carType}
+            </when>
+            <otherwise>
+
+            </otherwise>
+        </choose>
+    </select>
+
+    <!--使用set标签-->
+    <!--
+        对传入的数据进行修改，其中非空字段进行修改，空字段不对其进行修改
+    -->
+    <update id="updateBySet">
+        update t_car
+        <set>
+            <if test="carNum != null and carNum != ''">car_num = #{carNum}</if>
+            <if test="brand != null and brand != ''">brand = #{brand}</if>
+            <if test="guidePrice != null and guidePrice != ''">guide_price = #{guidePrice}</if>
+            <if test="produceTime != null and produceTime != ''">produce_time = #{produceTime}</if>
+            <if test="carType != null and carType != ''">car_type = #{carType}</if>
+        </set>
+        where
+            id = #{id}
+    </update>
+
+    <!--使用trim标签-->
+    <!--
+        prefix 添加前缀
+        suffix 添加后缀
+        prefixOverrides 删除前缀
+        suffixOverrides 删除后缀
+    -->
+    <select id="selectByMultiConditionWithTrim" resultMap="carResultMap">
+        select id,car_num,brand,guide_price,produce_time,car_type from t_car
+
+        <trim prefix="where" suffix="" prefixOverrides="" suffixOverrides="and|or">
+            <if test="brand != null and brand != ''">
+                brand like "%"#{brand}"%" and
+            </if>
+            <if test="guidePrice != null and guidePrice != ''">
+                guide_price > #{guidePrice} and
+            </if>
+            <if test="carType != null and carType != ''">
+                car_type = #{carType}
+            </if>
+        </trim>
+    </select>
+
+    <!--使用where标签-->
+    <select id="selectByMultiConditionWithWhere" resultMap="carResultMap">
+        select id,car_num,brand,guide_price,produce_time,car_type from t_car
+        <where>
+            <if test="brand != null and brand != ''">
+                and brand like "%"#{brand}"%"
+            </if>
+            <if test="guidePrice != null and guidePrice != ''">
+                and guide_price > #{guidePrice}
+            </if>
+            <if test="carType != null and carType != ''">
+                and car_type = #{carType}
+            </if>
+        </where>
+    </select>
+
+    <!--使用if标签-->
+    <select id="selectByMultiCondition" resultMap="carResultMap">
+        select * from t_car where 1=1
+
+        <if test="brand != null and brand != ''">
+            and brand like "%"#{brand}"%"
+        </if>
+        <if test="guidePrice != null and guidePrice != ''">
+            and guide_price > #{guidePrice}
+        </if>
+        <if test="carType != null and carType != ''">
+            and car_type = #{carType}
+        </if>
+    </select>
+
+    <!--Car的结果集映射-->
+    <resultMap id="carResultMap" type="Car">
+        <id property="id" column="id"/>
+        <result property="brand" column="brand"/>
+        <result property="guidePrice" column="guide_price"/>
+        <result property="carNum" column="car_num"/>
+        <result property="produceTime" column="produce_time"/>
+        <result property="carType" column="car_type"/>
+    </resultMap>
+
+</mapper>

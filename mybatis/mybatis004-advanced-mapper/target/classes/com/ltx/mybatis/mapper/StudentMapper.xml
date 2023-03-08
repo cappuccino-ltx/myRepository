@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ltx.mybatis.mapper.StudentMapper">
+
+    <select id="selectByCidStep2" resultType="Student">
+        select sid,sname from t_student where cid = #{cid}
+    </select>
+
+    <!--分步查询第一步-->
+    <select id="selectByIdStep1" resultMap="studentResultMapStep1">
+        select sid,sname,cid from t_student where sid = #{sid}
+    </select>
+    <resultMap id="studentResultMapStep1" type="Student">
+        <id property="sid" column="sid"/>
+        <result property="sname" column="sname"/>
+        <!--
+            mybatis支持延迟加载（懒加载）：就是用的时候加载，不用的时候不加载。
+            默认情况下，延迟加载是关闭的，需要手动设置
+            开启延迟加载的方法是在association标签里边 设置fetchType="lazy"，就可以启用延迟加载
+
+            这里的fetchType="lazy"只是打开了局部的延迟加载，并不是全局的
+        -->
+        <association property="sClass"
+                     select="com.ltx.mybatis.mapper.ClassMapper.selectById"
+                     column="cid"/>
+                     <!--fetchType="lazy"-->
+    </resultMap>
+
+    <!--通过association实现级联属性映射-->
+    <select id="selectByIdAssociation" resultMap="studentResultMapAssociation">
+        select
+            s.sid,s.sname,c.cid,c.cname
+        from
+            t_student s left join t_class c on s.cid = c.cid
+        where
+            sid = #{sid}
+    </select>
+    <resultMap id="studentResultMapAssociation" type="Student">
+        <id property="sid" column="sid"/>
+        <result property="sname" column="sname"/>
+
+        <association property="sClass" javaType="Class">
+            <result property="cid" column="cid"/>
+            <result property="cname" column="cname"/>
+        </association>
+    </resultMap>
+
+    <!--级联属性映射-->
+    <select id="selectById" resultMap="studentResultMap">
+        select
+            s.sid,s.sname,c.cid,c.cname
+        from
+            t_student s left join t_class c on s.cid = c.cid
+        where
+            s.sid = #{sid}
+    </select>
+    <resultMap id="studentResultMap" type="Student">
+        <id property="sid" column="sid"/>
+        <result property="sname" column="sname"/>
+        <result property="sClass.cid" column="cid"/>
+        <result property="sClass.cname" column="cname"/>
+    </resultMap>
+</mapper>
