@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>index</title>
+	</head>
+	<body>
+		<!--
+			用纯Servlet做一个前后端交互的项目：
+				1、数据库表的设计，一个部门表(dept)，包含：deptno,dname,loc(地区)
+					drop table if exists dept;
+					create table dept(
+						deptno int primary key,
+						dname varchar(255),
+						loc varchar(255)
+					);
+					
+					insert into dept(deptno,dname,loc) values(10,'销售部','北京');
+					insert into dept(deptno,dname,loc) values(20,'研发部','上海');
+					insert into dept(deptno,dname,loc) values(30,'技术部','广州');
+					insert into dept(deptno,dname,loc) values(40,'媒体部','深圳');
+					commit;
+					select * from dept;
+				
+				2、设计前端页面：以index.html为欢迎页面进行设计，要求可以实现页面的跳转
+					1,index.html（欢迎界面）
+					2,list.html（列表页面，对从数据库中取出的数进行展示，以本页面为主页面）
+					3,add.html（信息的添加）
+					4,edit.html（信息修改页面）
+					5,detail.html(详细信息页面)
+					
+				3、后端的准备：分析需要哪些功能：
+					其中，确定有那些功能：
+						* 什么叫功能，只有一个操作，它连接了数据库，那么它就是一个独立的功能。
+						1）查看部门列表，
+						2）新增部门，
+						3）删除部门，
+						4）跳转修改页面，
+						5）修改部门信息。
+						6）查看部门详细信息。
+				4、在IDEA中搭建环境，
+					·创建一个webapp
+					·想webapp中添加连接数据库的jar包
+					·JDBC的工具类
+				5、实现功能：
+		-->
+		<center><h1>欢迎</h1></center>
+		
+		<center><a href="/oa/dept/list">查看部门列表</a></center>
+	</body>
+</html>
