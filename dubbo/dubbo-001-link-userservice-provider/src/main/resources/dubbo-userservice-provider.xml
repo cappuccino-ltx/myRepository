@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://dubbo.apache.org/schema/dubbo"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--添加包扫描-->
+    <!--<context:component-scan base-package="com.ltx.dubbo.service"/>-->
+    <!--服务提供者声明，必须保证服务名称的唯一性，它的名称是dubbo的内部唯一标识-->
+    <dubbo:application name="dubbo-001-link-userservice-provider"/>
+
+    <!--服务协议的名称机器端口号，dubbo官方推荐的是dubbo协议，端口号默认为20880-->
+    <dubbo:protocol name="dubbo" port="20880"/>
+
+
+    <!--暴露服务-->
+    <!--
+        interface表示要暴露的接口服务
+        ref是接口的具体实现类
+        register：如果不使用注册中心，只就是N/A
+    -->
+    <dubbo:service interface="com.ltx.dubbo.service.UserService"
+                   ref="userService"
+                   registry="N/A"
+                   timeout="400099"/>
+
+    <bean id="userService" class="com.ltx.dubbo.service.impl.UserServiceImpl"/>
+
+
+</beans>
+
