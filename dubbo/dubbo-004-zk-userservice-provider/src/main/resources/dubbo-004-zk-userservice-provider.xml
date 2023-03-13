@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://dubbo.apache.org/schema/dubbo"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--添加包扫描-->
+    <!--<context:component-scan base-package="com.ltx.dubbo.service.impl"/>-->
+    <!--声明dubbo服务提供者的名称：保证唯一性-->
+    <dubbo:application name="004-zk-userservice-provider"/>
+    <!--声明dubbo使用的协议名称和端口号-->
+    <dubbo:protocol name="dubbo" port="20880"/>
+    <!--声明dubbo要使用的zookeeper注册中心-->
+    <!--声明zookeeper的注册地址和端口号-->
+    <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
+    <!--暴露接口服务-->
+    <dubbo:service interface="com.ltx.dubbo.service.UserService" ref="userService"/>
+    <bean id="userService" class="com.ltx.dubbo.service.impl.UserServiceImpl"/>
+</beans>
