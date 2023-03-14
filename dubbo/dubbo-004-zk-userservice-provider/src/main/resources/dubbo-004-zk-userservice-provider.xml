@@ -12,7 +12,7 @@
     <dubbo:protocol name="dubbo" port="20880"/>
     <!--声明dubbo要使用的zookeeper注册中心-->
     <!--声明zookeeper的注册地址和端口号-->
-    <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
+    <dubbo:registry address="zookeeper://localhost:2181"/>
     <!--暴露接口服务-->
     <dubbo:service interface="com.ltx.dubbo.service.UserService" ref="userService"/>
     <bean id="userService" class="com.ltx.dubbo.service.impl.UserServiceImpl"/>

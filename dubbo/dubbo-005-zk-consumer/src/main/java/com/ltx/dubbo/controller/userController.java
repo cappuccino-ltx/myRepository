@@ -2,7 +2,7 @@ package com.ltx.dubbo.controller;
 
 import com.ltx.dubbo.pojo.User;
 import com.ltx.dubbo.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class userController {
 
-    @Autowired
+    @Resource
     private UserService userService;
 
     @RequestMapping("/user")

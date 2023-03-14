@@ -6,7 +6,7 @@
     <!--声明dubbo消费者名称，具有唯一性-->
     <dubbo:application name="dubbo-005-zk-consumer"/>
     <!--指定注册中心-->
-    <dubbo:registry address="zookeeper://127.0.0.1:2081"/>
+    <dubbo:registry address="zookeeper://localhost:2181"/>
     <!--引用远程服务-->
-    <dubbo:service id="userService" interface="com.ltx.dubbo.service.UserService"/>
+    <dubbo:reference id="userService" interface="com.ltx.dubbo.service.UserService"/>
 </beans>
